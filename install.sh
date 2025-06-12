@@ -34,7 +34,7 @@ if [ "$opsi" = "1" ]; then
     echo "📁 Menyalin file ke sistem..."
     mkdir -p "$JADWAL_DEST"
 
-    base_url="https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot/main/etc/jadwalsholat"
+    base_url="https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot/main/jadwalsholatbot/etc/jadwalsholat"
 
     wget -qO "$JADWAL_DEST/jadwalsholatbot.py" "$base_url/jadwalsholatbot.py"
     wget -qO "$JADWAL_DEST/updatesholat.txt" "$base_url/updatesholat.txt"
@@ -53,7 +53,7 @@ LON=$LON
 EOF
 
     echo "📂 Menyalin service init.d"
-    wget -qO "$INIT_DEST/jadwalsholatbot" "https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot/main/etc/init.d/jadwalsholatbot"
+    wget -qO "$INIT_DEST/jadwalsholatbot" "https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot/main/jadwalsholatbot/etc/init.d/jadwalsholatbot"
     chmod +x "$INIT_DEST/jadwalsholatbot"
 
     echo "⚙️ Mengaktifkan dan menjalankan service..."
