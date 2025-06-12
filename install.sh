@@ -2,9 +2,6 @@
 
 set -e
 
-BASE_DIR=$(dirname "$0")
-JADWAL_SRC="$BASE_DIR/etc/jadwalsholat"
-INIT_SRC="$BASE_DIR/etc/init.d"
 JADWAL_DEST="/etc/jadwalsholat"
 INIT_DEST="/etc/init.d"
 
@@ -35,39 +32,29 @@ if [ "$opsi" = "1" ]; then
     read LON
 
     echo "📁 Menyalin file ke sistem..."
-
     mkdir -p "$JADWAL_DEST"
-    cp "$JADWAL_SRC/jadwalsholatbot.py" "$JADWAL_DEST/"
-    cp "$JADWAL_SRC/updatesholat.txt" "$JADWAL_DEST/"
-    cp "$JADWAL_SRC/katasholat.txt" "$JADWAL_DEST/"
-    cp "$JADWAL_SRC/penyambutpagi.txt" "$JADWAL_DEST/"
-    cp "$JADWAL_SRC/konfirgurasi.txt" "$JADWAL_DEST/"
 
-    cp "$INIT_SRC/jadwalsholatbot" "$INIT_DEST/"
-    chmod +x "$INIT_DEST/jadwalsholatbot"
+    base_url="https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot/main/etc/jadwalsholat"
+
+    wget -qO "$JADWAL_DEST/jadwalsholatbot.py" "$base_url/jadwalsholatbot.py"
+    wget -qO "$JADWAL_DEST/updatesholat.txt" "$base_url/updatesholat.txt"
+    wget -qO "$JADWAL_DEST/katasholat.txt" "$base_url/katasholat.txt"
+    wget -qO "$JADWAL_DEST/penyambutpagi.txt" "$base_url/penyambutpagi.txt"
 
     echo "📝 Menyimpan konfigurasi..."
     cat > "$JADWAL_DEST/konfirgurasi.txt" <<EOF
 # konfigurasi.txt
-
-# Masukkan token bot Telegram Anda
 TOKEN=$TOKEN
-
-# Masukkan chat ID (contoh: -1001234567890 untuk supergroup, atau ID user pribadi)
 CHAT_ID=$CHAT_ID
-
-# Masukkan thread ID jika menggunakan fitur forum thread di Telegram
-# Jika tidak digunakan, isi dengan None
 THREAD_ID=$THREAD_ID
-
-# Nama kota (opsional, hanya untuk info di jadwal)
 KOTA=$KOTA
-
-# Koordinat lokasi (jika ingin menentukan lokasi jadwal sholat)
-# Anda bisa menggunakan Google Maps atau situs seperti latlong.net untuk mencarinya
 LAT=$LAT
 LON=$LON
 EOF
+
+    echo "📂 Menyalin service init.d"
+    wget -qO "$INIT_DEST/jadwalsholatbot" "https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot/main/etc/init.d/jadwalsholatbot"
+    chmod +x "$INIT_DEST/jadwalsholatbot"
 
     echo "⚙️ Mengaktifkan dan menjalankan service..."
     /etc/init.d/jadwalsholatbot enable
@@ -81,17 +68,11 @@ EOF
 elif [ "$opsi" = "2" ]; then
     echo ""
     echo "⚠️  Uninstall Jadwal Sholat Bot"
-
     /etc/init.d/jadwalsholatbot stop 2>/dev/null || true
     /etc/init.d/jadwalsholatbot disable 2>/dev/null || true
-
-    echo "🧹 Menghapus file..."
     rm -rf "$JADWAL_DEST"
     rm -f "$INIT_DEST/jadwalsholatbot"
-
     echo "✅ Uninstall selesai!"
-elif [ "$opsi" = "0" ]; then
-    echo "❎ Keluar dari installer."
 else
-    echo "❌ Pilihan tidak valid."
+    echo "❎ Keluar dari installer."
 fi
