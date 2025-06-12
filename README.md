@@ -21,6 +21,13 @@ bash -c "$(wget -qO - 'https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot
 - ✅ Perintah manual: `/start`, `/jadwal`, `/update`
 - ✅ Auto update jadwal via API Aladhan setiap 5 jam
 - ✅ Bebas cronjob — berjalan terus pakai Python
+- 📍 Kustom lokasi berdasarkan titik koordinat Anda! Cukup masukkan Latitude & Longitude untuk menyesuaikan jadwal sholat sesuai posisi geografis.
+
+Contoh:
+- Latitude: `-7.5467668`
+- Longitude: `109.0899219`
+
+Gunakan [Google Maps](https://maps.google.com) atau [latlong.net](https://www.latlong.net/) untuk mendapatkan titik lokasi Anda secara akurat.
 
 ---
 
@@ -28,16 +35,17 @@ bash -c "$(wget -qO - 'https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot
 
 ```
 Jadwalsholatbot/
-├── install.sh              # Instalasi otomatis
-├── etc/
-│   ├── jadwalsholat/
-│   │   ├── jadwalsholatbot.py
-│   │   ├── updatesholat.txt
-│   │   ├── katasholat.txt
-│   │   ├── penyambutpagi.txt
-│   │   └── konfirgurasi.txt
-│   └── init.d/
-│       └── jadwalsholatbot
+├── jadwalsholatbot/
+│   └── etc/
+│       ├── jadwalsholat/
+│       │   ├── jadwalsholatbot.py
+│       │   ├── updatesholat.txt
+│       │   ├── katasholat.txt
+│       │   ├── penyambutpagi.txt
+│       │   └── konfirgurasi.txt
+│       └── init.d/
+│           └── jadwalsholatbot
+├── install.sh
 ```
 
 ---
@@ -66,6 +74,8 @@ Pastikan perangkatmu (OpenWRT / VPS / Linux) memiliki:
 ### 📸 Screenshots
 
 <p align="center">
+  <img src="assets/instal.png" alt="Proses Instalasi">
+  <br>
   <img src="assets/jadwal.png" alt="Jadwal Sholat">
   <br>
   <img src="assets/notifikasi1.png" alt="Notifikasi Telegram 1">
