@@ -37,8 +37,11 @@ if [ "$opsi" = "1" ]; then
     echo "📁 Menyalin file ke sistem..."
 
     mkdir -p "$JADWAL_DEST"
-    cp "$JADWAL_SRC"/*.py "$JADWAL_DEST/"
-    cp "$JADWAL_SRC"/*.txt "$JADWAL_DEST/"
+    cp "$JADWAL_SRC/jadwalsholatbot.py" "$JADWAL_DEST/"
+    cp "$JADWAL_SRC/updatesholat.txt" "$JADWAL_DEST/"
+    cp "$JADWAL_SRC/katasholat.txt" "$JADWAL_DEST/"
+    cp "$JADWAL_SRC/penyambutpagi.txt" "$JADWAL_DEST/"
+    cp "$JADWAL_SRC/konfirgurasi.txt" "$JADWAL_DEST/"
 
     cp "$INIT_SRC/jadwalsholatbot" "$INIT_DEST/"
     chmod +x "$INIT_DEST/jadwalsholatbot"
@@ -60,7 +63,7 @@ THREAD_ID=$THREAD_ID
 # Nama kota (opsional, hanya untuk info di jadwal)
 KOTA=$KOTA
 
-# Koordinat lokasi (jika ingin menentukan lokasi jadwal salat)
+# Koordinat lokasi (jika ingin menentukan lokasi jadwal sholat)
 # Anda bisa menggunakan Google Maps atau situs seperti latlong.net untuk mencarinya
 LAT=$LAT
 LON=$LON
