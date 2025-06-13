@@ -196,6 +196,5 @@ untuk wilayah <b>{KOTA}</b> dan sekitarnya.
 
 # === Mulai Bot ===
 if __name__ == "__main__":
-    kirim_sambutan()
     threading.Thread(target=loop_pengingat, daemon=True).start()
     bot.infinity_polling()
