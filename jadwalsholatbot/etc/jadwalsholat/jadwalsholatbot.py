@@ -6,24 +6,6 @@ from datetime import datetime
 import random
 import os
 
-# === Load konfirgurasi dari file ===
-def load_konfirgurasi(file_path):
-    config = {}
-    try:
-        with open(file_path, "r") as f:
-            for line in f:
-                if line.strip() and not line.startswith("#"):
-                    key, value = line.strip().split("=", 1)
-                    if value == "None":
-                        config[key] = None
-                    elif value.replace('.', '', 1).replace('-', '', 1).isdigit():
-                        config[key] = float(value) if '.' in value else int(value)
-                    else:
-                        config[key] = value
-    except Exception as e:
-        print("Gagal baca konfirgurasi:", e)
-    return config
-
 # === Load konfigurasi dari file ===
 def load_konfirgurasi(file_path):
     config = {}
