@@ -114,14 +114,15 @@ def kirim_jadwal():
         kirim_telegram("Jadwal sholat belum tersedia.")
 
 def kirim_sambutan():
-    pesan = f"""Assalamu'alaikum teman-teman!
+    pesan = f"""<b>Terima kasih telah menggunakan Bot Jadwal Sholat!</b> 🙌
 
-Bot ini akan bantu kamu untuk selalu tepat waktu dalam menjalankan sholat. ⏰✨
+Berikut beberapa perintah yang bisa kamu gunakan:
+• <b>/jadwal</b> – Lihat jadwal sholat hari ini sesuai lokasi kamu.
+• <b>/update</b> – Perbarui jadwal sholat secara manual.
+• <b>/setlokasi</b> – Ganti lokasi agar jadwal sesuai tempat kamu berada.
 
-Ketik /jadwal untuk melihat jadwal sholat hari ini.
-Saya juga akan mengingatkan saat waktu sholat tiba. 🙏
-
-Semoga harimu penuh kebaikan dan keberkahan! 🌸"""
+Bot ini akan mengingatkanmu secara otomatis saat waktu sholat tiba.
+Semoga harimu penuh keberkahan dan ketenangan. 🌤🕌"""
     kirim_telegram(pesan)
 
 @bot.message_handler(commands=['start'])
