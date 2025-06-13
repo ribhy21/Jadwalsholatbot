@@ -82,13 +82,13 @@ Ketik /start untuk memulai dan panduan lainnya."
         curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
             -d chat_id="$CHAT_ID" \
             -d text="$WELCOME_MSG" \
-            -d parse_mode="Markdown"
+            -d parse_mode="Markdown" > /dev/null
     else
         curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
             -d chat_id="$CHAT_ID" \
             -d message_thread_id="$THREAD_ID" \
             -d text="$WELCOME_MSG" \
-            -d parse_mode="Markdown"
+            -d parse_mode="Markdown" > /dev/null
     fi
 
     echo "✅ Pesan sambutan berhasil dikirim."
