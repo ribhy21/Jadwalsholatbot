@@ -18,7 +18,7 @@ bash -c "$(wget -qO - 'https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot
 - ✅ Kirim jadwal sholat harian otomatis
 - ✅ Notifikasi tiap waktu sholat
 - ✅ Dukungan Telegram group & thread (forum)
-- ✅ Perintah manual: `/start`, `/jadwal`, `/update`
+- ✅ Perintah manual: `/start`, `/jadwal`, `/update`, `/setlokasi`
 - ✅ Auto update jadwal via API Aladhan setiap 5 jam
 - ✅ Bebas cronjob — berjalan terus pakai Python
 - 📍 Kustom lokasi berdasarkan titik koordinat Anda! Cukup masukkan Latitude & Longitude untuk menyesuaikan jadwal sholat sesuai posisi geografis.
