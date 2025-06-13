@@ -24,8 +24,8 @@ bash -c "$(wget -qO - 'https://raw.githubusercontent.com/ribhy21/Jadwalsholatbot
 - 📍 Kustom lokasi berdasarkan titik koordinat Anda! Cukup masukkan Latitude & Longitude untuk menyesuaikan jadwal sholat sesuai posisi geografis.
 
 Contoh:
-- Latitude: `-7.5467668`
-- Longitude: `109.0899219`
+- Latitude: `-7.533912`
+- Longitude: `109.121122`
 
 Gunakan [Google Maps](https://maps.google.com) atau [latlong.net](https://www.latlong.net/) untuk mendapatkan titik lokasi Anda secara akurat.
 
@@ -88,7 +88,6 @@ Pastikan perangkatmu (OpenWRT / VPS / Linux) memiliki:
 ---
 
 ### 📄 Lisensi
-
 - [MIT License](https://github.com/ribhy21/Jadwalsholatbot/blob/main/LICENSE)
 - Data jadwal dari [Aladhan.com](https://aladhan.com/)
 
