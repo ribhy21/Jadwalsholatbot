@@ -6,7 +6,6 @@ from datetime import datetime
 import random
 import os
 
-# === Load konfigurasi dari file ===
 def load_konfirgurasi(file_path):
     config = {}
     try:
@@ -27,13 +26,12 @@ def load_konfirgurasi(file_path):
 def get_config():
     return load_konfirgurasi("/etc/jadwalsholat/konfirgurasi.txt")
 
-config = get_config()  # <=== tambahkan ini
+config = get_config()
 
-# Pakai variabel dari konfirgurasi
 TOKEN = config.get("TOKEN")
 CHAT_ID = config.get("CHAT_ID")
 THREAD_ID = config.get("THREAD_ID")
-KOTA = config.get("KOTA")  # Tanpa default
+KOTA = config.get("KOTA")
 LAT = config.get("LAT")
 LON = config.get("LON")
 
@@ -68,11 +66,11 @@ def ambil_jadwal():
         LAT = config.get("LAT")
         LON = config.get("LON")
         KOTA = config.get("KOTA")
-        print(f"[DEBUG] Baca LAT: {LAT}, LON: {LON}, KOTA: {KOTA}")  # Ini wajib ada
+        print(f"[DEBUG] Baca LAT: {LAT}, LON: {LON}, KOTA: {KOTA}")
 
         url = f"https://api.aladhan.com/v1/timings?latitude={LAT}&longitude={LON}&method=20"
         response = requests.get(url)
-        print("[DEBUG] Raw response:", response.text)  # Tambahkan ini
+        print("[DEBUG] Raw response:", response.text)
         response = response.json()
 
         tgl = response['data']['date']['readable']
