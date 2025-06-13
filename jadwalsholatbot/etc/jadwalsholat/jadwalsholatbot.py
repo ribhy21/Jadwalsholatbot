@@ -4,6 +4,7 @@ import time
 import threading
 from datetime import datetime
 import random
+import os
 
 # === Load konfirgurasi dari file ===
 def load_konfirgurasi(file_path):
@@ -23,7 +24,28 @@ def load_konfirgurasi(file_path):
         print("Gagal baca konfirgurasi:", e)
     return config
 
-config = load_konfirgurasi("/etc/jadwalsholat/konfirgurasi.txt")
+# === Load konfigurasi dari file ===
+def load_konfirgurasi(file_path):
+    config = {}
+    try:
+        with open(file_path, "r") as f:
+            for line in f:
+                if line.strip() and not line.startswith("#"):
+                    key, value = line.strip().split("=", 1)
+                    if value == "None":
+                        config[key] = None
+                    elif value.replace('.', '', 1).replace('-', '', 1).isdigit():
+                        config[key] = float(value) if '.' in value else int(value)
+                    else:
+                        config[key] = value
+    except Exception as e:
+        print("Gagal baca konfirgurasi:", e)
+    return config
+
+def get_config():
+    return load_konfirgurasi("/etc/jadwalsholat/konfirgurasi.txt")
+
+config = get_config()  # <=== tambahkan ini
 
 # Pakai variabel dari konfirgurasi
 TOKEN = config.get("TOKEN")
@@ -60,8 +82,16 @@ def kirim_telegram(pesan):
 
 def ambil_jadwal():
     try:
+        config = get_config()
+        LAT = config.get("LAT")
+        LON = config.get("LON")
+        KOTA = config.get("KOTA")
+        print(f"[DEBUG] Baca LAT: {LAT}, LON: {LON}, KOTA: {KOTA}")  # Ini wajib ada
+
         url = f"https://api.aladhan.com/v1/timings?latitude={LAT}&longitude={LON}&method=20"
-        response = requests.get(url).json()
+        response = requests.get(url)
+        print("[DEBUG] Raw response:", response.text)  # Tambahkan ini
+        response = response.json()
 
         tgl = response['data']['date']['readable']
         hijri = response['data']['date']['hijri']
@@ -142,6 +172,78 @@ def handle_update(message):
         waktu = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         kirim_telegram(f"""✅ Jadwal sholat berhasil diperbarui pada <b>{waktu}</b>.
 Ketik <b>/jadwal</b> untuk melihat jadwal terbaru.""")
+
+user_states = {}
+user_data = {}
+
+@bot.message_handler(commands=['setlokasi'])
+def handle_setlokasi(message):
+    if message.chat.id == CHAT_ID and message.message_thread_id == THREAD_ID:
+        user_id = message.from_user.id
+        user_states[user_id] = "awaiting_lat"
+        user_data[user_id] = {}
+        bot.reply_to(message, "Silakan masukkan koordinat <b>Latitude</b> Anda:", parse_mode="HTML")
+
+@bot.message_handler(func=lambda msg: msg.chat.id == CHAT_ID and msg.message_thread_id == THREAD_ID)
+def handle_user_input(message):
+    user_id = message.from_user.id
+    state = user_states.get(user_id)
+
+    if not state:
+        return  # tidak dalam sesi input /setlokasi
+
+    if state == "awaiting_lat":
+        try:
+            user_data[user_id]["LAT"] = float(message.text.strip())
+            user_states[user_id] = "awaiting_lon"
+            bot.reply_to(message, "Sekarang masukkan koordinat <b>Longitude</b> Anda:", parse_mode="HTML")
+        except:
+            bot.reply_to(message, "Format Latitude tidak valid. Harap masukkan angka, contoh: -7.5467", parse_mode="Markdown")
+
+    elif state == "awaiting_lon":
+        try:
+            user_data[user_id]["LON"] = float(message.text.strip())
+            user_states[user_id] = "awaiting_kota"
+            bot.reply_to(message, "Terakhir, masukkan <b>nama kota</b> Anda:", parse_mode="HTML")
+        except:
+            bot.reply_to(message, "Format Longitude tidak valid. Harap masukkan angka, contoh: 109.0899", parse_mode="Markdown")
+
+    elif state == "awaiting_kota":  # ✅ dipindah ke sini
+        user_data[user_id]["KOTA"] = message.text.strip()
+        try:
+            # Simpan ke konfirgurasi.txt
+            with open("/etc/jadwalsholat/konfirgurasi.txt", "r") as f:
+                lines = f.readlines()
+
+            new_lines = []
+            for line in lines:
+                if line.startswith("LAT="):
+                    new_lines.append(f'LAT={user_data[user_id]["LAT"]}\n')
+                elif line.startswith("LON="):
+                    new_lines.append(f'LON={user_data[user_id]["LON"]}\n')
+                elif line.startswith("KOTA="):
+                    new_lines.append(f'KOTA={user_data[user_id]["KOTA"]}\n')
+                else:
+                    new_lines.append(line)
+
+            with open("/etc/jadwalsholat/konfirgurasi.txt", "w") as f:
+                f.writelines(new_lines)
+
+            # Ambil ulang jadwal sholat
+            waktu_sholat = ambil_jadwal()  # panggil API berdasarkan lokasi baru
+
+            bot.reply_to(message, f"""✅ Lokasi berhasil diperbarui!
+📍 <b>{user_data[user_id]["KOTA"]}</b>
+🌐 Koordinat: <code>{user_data[user_id]["LAT"]}, {user_data[user_id]["LON"]}</code>
+
+Silakan ketik /jadwal untuk melihat jadwal salat terbaru.""", parse_mode="HTML")
+
+        except Exception as e:
+            bot.reply_to(message, f"Gagal memperbarui lokasi: {e}")
+
+        # Clear state
+        user_states.pop(user_id, None)
+        user_data.pop(user_id, None)
 
 def loop_pengingat():
     waktu_sholat = ambil_jadwal()
