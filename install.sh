@@ -19,17 +19,20 @@ if [ "$opsi" = "1" ]; then
     echo "📋 Masukkan Konfigurasi Bot Telegram"
     printf "Token Bot Telegram: "
     read TOKEN
-    printf "Chat ID (misal: -1001234567890): "
+    printf "Chat ID (misal: @gruppublik, 1234567890, dan tambahkan -100 didepan untuk super group private): "
     read CHAT_ID
     printf "Thread ID (tekan Enter jika tidak digunakan): "
     read THREAD_ID
     [ -z "$THREAD_ID" ] && THREAD_ID="None"
-    printf "Nama Kota (misal: Banyumas): "
+    printf "Nama Kota (tekan enter untuk Default: Banyumas): "
     read KOTA
-    printf "Latitude (misal: -7.5467668): "
+    [ -z "$KOTA" ] && KOTA="Banyumas"
+    printf "Latitude (tekan enter untuk Default: -7.533912): "
     read LAT
-    printf "Longitude (misal: 109.0899219): "
+    [ -z "$LAT" ] && LAT="-7.533912"
+    printf "Longitude (tekan enter untuk Default: 109.121122): "
     read LON
+    [ -z "$LON" ] && LON="109.121122"
 
     echo "📁 Menyalin file ke sistem..."
     mkdir -p "$JADWAL_DEST"
