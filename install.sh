@@ -68,6 +68,31 @@ EOF
     echo "📁 File konfigurasi: $JADWAL_DEST/konfirgurasi.txt"
     echo "▶️  Bot sudah aktif dan berjalan sekarang."
 
+    echo "📨 Mengirim pesan sambutan ke Telegram Anda..."
+
+    WELCOME_MSG="Assalamu'alaikum warahmatullahi wabarakatuh! 👋
+
+🤖 *Bot Jadwal Sholat* berhasil diinstal.
+
+Bot ini akan membantumu mendapatkan jadwal sholat dan pengingat waktu sholat harian secara otomatis.  
+
+Ketik /start untuk memulai dan panduan lainnya."
+
+    if [ "$THREAD_ID" = "None" ]; then
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
+            -d chat_id="$CHAT_ID" \
+            -d text="$WELCOME_MSG" \
+            -d parse_mode="Markdown"
+    else
+        curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
+            -d chat_id="$CHAT_ID" \
+            -d message_thread_id="$THREAD_ID" \
+            -d text="$WELCOME_MSG" \
+            -d parse_mode="Markdown"
+    fi
+
+    echo "✅ Pesan sambutan berhasil dikirim."
+
 elif [ "$opsi" = "2" ]; then
     echo ""
     echo "⚠️  Uninstall Jadwal Sholat Bot"
