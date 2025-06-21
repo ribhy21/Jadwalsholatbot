@@ -16,6 +16,48 @@ read opsi
 
 if [ "$opsi" = "1" ]; then
     echo ""
+    echo "📦 Memastikan dependensi sistem tersedia (python3, pip3, curl, wget, bash)..."
+    command -v python3 >/dev/null 2>&1 || {
+        echo "⛔ Python3 tidak ditemukan. Harap install Python 3 terlebih dahulu."
+        exit 1
+    }
+    command -v pip3 >/dev/null 2>&1 || {
+        echo "📦 pip3 tidak ditemukan. Mencoba menginstall..."
+        (apt update && apt install -y python3-pip) || (opkg update && opkg install python3-pip) || {
+            echo "⛔ Gagal menginstall pip3. Harap install manual."
+            exit 1
+        }
+    }
+    command -v curl >/dev/null 2>&1 || {
+        echo "📦 curl tidak ditemukan. Mencoba menginstall..."
+        (apt install -y curl) || (opkg install curl) || {
+            echo "⛔ Gagal menginstall curl. Harap install manual."
+            exit 1
+        }
+    }
+    command -v wget >/dev/null 2>&1 || {
+        echo "📦 wget tidak ditemukan. Mencoba menginstall..."
+        (apt install -y wget) || (opkg install wget) || {
+            echo "⛔ Gagal menginstall wget. Harap install manual."
+            exit 1
+        }
+    }
+    command -v bash >/dev/null 2>&1 || {
+        echo "📦 bash tidak ditemukan. Mencoba menginstall..."
+        (apt install -y bash) || (opkg install bash) || {
+            echo "⛔ Gagal menginstall bash. Harap install manual."
+            exit 1
+        }
+    }
+    echo "🐍 Menginstall package Python: pyTelegramBotAPI, requests..."
+    pip3 install --no-cache-dir pyTelegramBotAPI requests || {
+        echo "⛔ Gagal install package Python. Harap cek koneksi atau install manual."
+        exit 1
+    }
+
+    echo "✅ Semua dependensi terpasang dengan baik."
+
+    echo ""
     echo "📋 Masukkan Konfigurasi Bot Telegram"
     printf "Token Bot Telegram: "
     read TOKEN
