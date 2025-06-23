@@ -67,7 +67,7 @@ Pastikan perangkatmu (OpenWRT / VPS / Linux) memiliki:
 - Python 3
 - requests (`pip install requests`)
 - pyTelegramBotAPI (`pip install pyTelegramBotAPI`)
-- Wget, bash (umumnya sudah ada)
+- Wget, bash
 
 ---
 
