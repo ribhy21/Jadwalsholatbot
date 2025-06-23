@@ -76,7 +76,7 @@ Pastikan perangkatmu (OpenWRT / VPS / Linux) memiliki:
 <p align="center">
   <img src="assets/instal.png" alt="Proses Instalasi">
   <br>
-  <img src="assets/jadwal.png" alt="Jadwal Sholat">
+  <img src="assets/notifikasi0.png" alt="Jadwal Sholat">
   <br>
   <img src="assets/notifikasi1.png" alt="Notifikasi Telegram 1">
   <br>
